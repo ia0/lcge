@@ -22,7 +22,7 @@ namespace term {
     body_->print_() ;
   }
 
-  bool Abs::reduce (Term *&) {
+  bool Abs::reduce (Term *&/*me*/) {
     return body_->reduce(body_) ;
   }
 
@@ -33,7 +33,7 @@ namespace term {
     return body ;
   }
 
-  bool Abs::subst (Term *&, Term *term, unsigned int target, bool can_use) {
+  bool Abs::subst (Term *&/*me*/, Term *term, unsigned int target, bool can_use) {
     ++target ;
     return body_->subst(body_, term, target, can_use) ;
   }

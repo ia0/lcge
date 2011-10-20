@@ -17,7 +17,7 @@ namespace term {
     std::cout << level_ ;
   }
 
-  bool Var::reduce (Term *&) {
+  bool Var::reduce (Term *&/*me*/) {
     return false ;
   }
 
