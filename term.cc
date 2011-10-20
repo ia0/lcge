@@ -1,8 +1,13 @@
 #include <iostream>
+#include <sstream>
+#include <string>
 #include <cstdlib>
 #include <cassert>
 
 #include "term.hh"
+#include "var.hh"
+#include "abs.hh"
+#include "app.hh"
 
 namespace term {
   Term::Term () {}
@@ -160,50 +165,62 @@ namespace term {
 //     return term ;
 //   }
 
-//   Term *jot2term (const bool jot[], unsigned int pos) {
-//     if (pos == 0) {  // [] = \0
-//       return newAbs(newVar(0)) ;
-//     }
-//     --pos ;
-//     if (jot[pos]) {  // [F]1 = \\[F]10
-//       Term *f = jot2term (jot, pos) ;
-//       return newAbs(newAbs(newApp(f,newApp(newVar(1),newVar(0))))) ;
-//     } else {  // [F]0 = ([F](\\\(20)10))(\\1)
-//       Term *f = jot2term (jot, pos) ;
-//       Term *s = newAbs(newAbs(newAbs(newApp(newApp(newVar(2),newVar(0)),newApp(newVar(1),newVar(0)))))) ;
-//       Term *k = newAbs(newAbs(newVar(1))) ;
-//       return newApp(newApp(f,s),k) ;
-//     }
-//   }
+  Term *jot2term (const bool jot[], unsigned int pos) {
+    using namespace std ;
+    if (pos == 0) {  // [] = \0
+      return new Abs(new Var(0)) ;
+    }
+    --pos ;
+    if (jot[pos]) {  // [F]1 = \\[F]10
+      Term *f = jot2term(jot, pos) ;
+      return new Abs(new Abs(new App(f, new App(new Var(1), new Var(0))))) ;
+    } else {  // [F]0 = ([F](\\\(20)10))(\\1)
+      Term *f = jot2term(jot, pos) ;
+      Term *s = parse("\\\((2)0)(1)0") ;
+      Term *k = parse("\\1") ;
+      return new App(new App(f, s), k) ;
+    }
+  }
 
-//   Term *randTerm (unsigned int count) {
-//     bool jot[count] ;
-//     for (unsigned int i = 0; i < count; ++i) {
-//       if (rand() % 2) {
-//         jot[i] = true ;
-//       } else {
-//         jot[i] = false ;
-//       }
-//     }
-//     return jot2term (jot, count) ;
-//   }
+  Term *randTerm (unsigned int count) {
+    bool jot[count] ;
+    for (unsigned int i = 0; i < count; ++i) {
+      if (rand() % 2) {
+        jot[i] = true ;
+      } else {
+        jot[i] = false ;
+      }
+    }
+    return jot2term (jot, count) ;
+  }
 
-//   Term *parse () {
-//     using namespace std ;
-//     char c ;
-//     cin.get(c) ;
-//     switch (c) {
-//     case '\\':
-//       return newAbs(parse()) ;
-//     case '(': {
-//       Term *fun = parse() ;
-//       cin.get(c) ;
-//       assert( c == ')' );
-//       Term *arg = parse() ;
-//       return newApp(fun,arg) ; }
-//     default:
-//       unsigned int level = c - '0' ;
-//       return newVar(level) ;
-//     }
-//   }
+  Term *parse (const char s[]) {
+    using namespace std ;
+    string str(s) ;
+    return parse(cin) ;
+  }
+
+  Term *parse (const std::string &s) {
+    using namespace std ;
+    istringstream cin(s) ;
+    return parse(cin) ;
+  }
+
+  Term *parse (std::istream &cin) {
+    char c ;
+    cin.get(c) ;
+    switch (c) {
+    case '\\':
+      return new Abs(parse(cin)) ;
+    case '(': {
+      Term *fun = parse(cin) ;
+      cin.get(c) ;
+      assert( c == ')' );
+      Term *arg = parse(cin) ;
+      return new App(fun,arg) ; }
+    default:
+      unsigned int level = c - '0' ;
+      return new Var(level) ;
+    }
+  }
 }

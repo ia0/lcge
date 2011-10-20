@@ -1,6 +1,8 @@
 #ifndef __TERM_HH__
 #define __TERM_HH__
 
+#include <iostream>
+
 namespace term {
   class Term {
   private:
@@ -19,9 +21,11 @@ namespace term {
     // void overwrite_with (Term *source) ;
   } ;
 
-  // Term *jot2term (const bool jot[], unsigned int pos) ;
-  // Term *randTerm (unsigned int count) ;
-  // Term *parse () ;
+  Term *jot2term (const bool jot[], unsigned int pos) ;
+  Term *randTerm (unsigned int count) ;
+  Term *parse (const char s[]) ;
+  Term *parse (const std::string &s) ;
+  Term *parse (std::istream &cin) ;
 }
 
 #endif  // __TERM_HH__
