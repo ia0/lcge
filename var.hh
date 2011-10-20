@@ -14,6 +14,9 @@ namespace term {
     Var (const Var &var) ;
     Term *clone () const ;
     void print_ () const ;
+    bool reduce (Term *&me) ;
+    bool subst (Term *&me, Term *term, unsigned int target, bool can_use) ;
+    void shift (unsigned int shift, unsigned int scope) ;
   } ;
 }
 

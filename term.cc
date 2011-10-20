@@ -19,165 +19,23 @@ namespace term {
     if (newline) std::cout << std::endl ;
   }
 
-//   bool Term::reduce () {
-// #ifdef DEBUG
-//     { using namespace std ;
-//       cout << "BEGIN reduce " ;
-//       print(false) ;
-//       cout << endl ; }
-// #endif
-//     bool result = true ;  // will be overwritten
-//     switch (flag_) {
-//     case Var_f:
-//       result = false ;
-//       break ;
-//     case Abs_f:
-//       result = content_.abs_c->body_->reduce() ;
-//       break ;
-//     case App_f:
-//       App *app = content_.app_c ;
-//       Term *fun = app->fun_ ;
-//       Term *arg = app->arg_ ;
-//       if (fun->flag_ == Abs_f) {
-//         Term *body = fun->content_.abs_c->body_ ;
-//         if (! body->subst(arg)) {
-//           delete arg ;
-//         }
-//         overwrite_with(body) ;
-//         app->arg_ = NULL ;
-//         fun->content_.abs_c->body_ = NULL ;
-//         delete app ;
-//         result = true ;
-//       } else {
-//         result = fun->reduce() || arg->reduce() ;
-//       }
-//       break ;
-//     }
-// #ifdef DEBUG
-//     { using namespace std ;
-//       cout << "END reduce = " << result << endl ; }
-// #endif
-//     return result ;
-//   }
-
-//   bool Term::subst (Term *term, unsigned int target, bool can_use) {
-// #ifdef DEBUG
-//     { using namespace std ;
-//       cout << "BEGIN subst " << target << " for " ;
-//       term->print(false) ;
-//       cout << " in " ;
-//       print(false) ;
-//       cout << " (can_use=" << can_use << ")" << endl ; }
-// #endif
-//     bool result = true ;  // will be overwritten
-//     switch (flag_) {
-//     case Var_f: {
-//       Var *var = content_.var_c ;
-//       unsigned int level = var->level_ ;
-//       if (level < target) {
-//         result = false ;
-//       } else if (level == target) {
-//         delete var ;
-//         if (can_use) {
-//           overwrite_with(term) ;
-//         } else {
-//           overwrite_with(new Term(*term)) ;
-//         }
-//         shift(level) ;
-//         result = true ;
-//       } else {
-//         --var->level_ ;
-//         result = false ;
-//       }
-//       break ; }
-//     case Abs_f:
-//       ++target ;
-//       result = content_.abs_c->body_->subst(term, target, can_use) ;
-//       break ;
-//     case App_f:
-//       bool fun_used = content_.app_c->fun_->subst(term, target, can_use) ;
-//       bool arg_used = content_.app_c->arg_->subst(term, target, can_use && !fun_used) ;
-//       result = fun_used || arg_used ;
-//       break ;
-//     }
-// #ifdef DEBUG
-//     { using namespace std ;
-//       cout << "END subst = " << result << endl ; }
-// #endif
-//     return result ;
-//   }
-
-//   void Term::shift (unsigned int shift, unsigned int scope) {
-//     switch (flag_) {
-//     case Var_f: {
-//       Var *var = content_.var_c ;
-//       unsigned int level = var->level_ ;
-//       if (level >= scope) {
-//         var->level_ += shift ;
-//       }
-//       break ; }
-//     case Abs_f:
-//       ++scope ;
-//       content_.abs_c->body_->shift(shift, scope) ;
-//       break ;
-//     case App_f:
-//       content_.app_c->fun_->shift(shift, scope) ;
-//       content_.app_c->arg_->shift(shift, scope) ;
-//       break ;
-//     }
-//   }
-
-//   void Term::overwrite_with (Term *source) {
-// #ifdef DEBUG
-//     { using namespace std ;
-//       cout << "BEGIN overwrite_with " ;
-//       source->print(false) ;
-//       cout << endl ; }
-// #endif
-//     flag_ = source->flag_ ;
-//     content_ = source->content_ ;
-//     source->content_.var_c = NULL ;  // var_c is kind of a hack
-//     delete source ;
-// #ifdef DEBUG
-//     { using namespace std ;
-//       cout << "END overwrite" << endl ; }
-// #endif
-//   }
-
-//   Term *newVar (const unsigned int level) {
-//     Term::Content content ;
-//     content.var_c = new Var(level) ;
-//     Term *term = new Term(Term::Var_f, content) ;
-//     return term ;
-//   }
-
-//   Term *newAbs (Term *body) {
-//     Term::Content content ;
-//     content.abs_c = new Abs(body) ;
-//     Term *term = new Term(Term::Abs_f, content) ;
-//     return term ;
-//   }
-
-//   Term *newApp (Term *fun, Term *arg) {
-//     Term::Content content ;
-//     content.app_c = new App(fun, arg) ;
-//     Term *term = new Term(Term::App_f, content) ;
-//     return term ;
-//   }
+  Term *Term::get_body () {
+    return NULL ;
+  }
 
   Term *jot2term (const bool jot[], unsigned int pos) {
     using namespace std ;
     if (pos == 0) {  // [] = \0
-      return new Abs(new Var(0)) ;
+      return parse(".0") ;
     }
     --pos ;
-    if (jot[pos]) {  // [F]1 = \\[F]10
+    if (jot[pos]) {  // [F]1 = ..([F])(1)0
       Term *f = jot2term(jot, pos) ;
-      return new Abs(new Abs(new App(f, new App(new Var(1), new Var(0))))) ;
-    } else {  // [F]0 = ([F](\\\(20)10))(\\1)
+      return new Abs(new Abs(new App(f, parse("(1)0")))) ;
+    } else {  // [F]0 = (([F])...((2)0)(1)0)..1
       Term *f = jot2term(jot, pos) ;
-      Term *s = parse("\\\((2)0)(1)0") ;
-      Term *k = parse("\\1") ;
+      Term *s = parse("...((2)0)(1)0") ;
+      Term *k = parse("..1") ;
       return new App(new App(f, s), k) ;
     }
   }
@@ -197,13 +55,13 @@ namespace term {
   Term *parse (const char s[]) {
     using namespace std ;
     string str(s) ;
-    return parse(cin) ;
+    return parse(str) ;
   }
 
   Term *parse (const std::string &s) {
     using namespace std ;
-    istringstream cin(s) ;
-    return parse(cin) ;
+    istringstream iss(s) ;
+    return parse(iss) ;
   }
 
   Term *parse (std::istream &cin) {
@@ -211,6 +69,7 @@ namespace term {
     cin.get(c) ;
     switch (c) {
     case '\\':
+    case '.':
       return new Abs(parse(cin)) ;
     case '(': {
       Term *fun = parse(cin) ;
@@ -222,5 +81,9 @@ namespace term {
       unsigned int level = c - '0' ;
       return new Var(level) ;
     }
+  }
+
+  bool reduce (Term *&term) {
+    return term->reduce(term) ;
   }
 }

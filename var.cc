@@ -16,4 +16,32 @@ namespace term {
   void Var::print_ () const {
     std::cout << level_ ;
   }
+
+  bool Var::reduce (Term *&) {
+    return false ;
+  }
+
+  bool Var::subst (Term *&me, Term *term, unsigned int target, bool can_use) {
+    if (level_ < target) {
+      return false ;
+    } else if (level_ == target) {
+      delete this ;
+      if (can_use) {
+        me = term ;
+      } else {
+        me = term->clone() ;
+      }
+      me->shift(target) ;
+      return true ;
+    } else {
+      --level_ ;
+      return false ;
+    }
+  }
+
+  void Var::shift (unsigned int shift, unsigned int scope) {
+    if (level_ >= scope) {
+      level_ += shift ;
+    }
+  }
 }
