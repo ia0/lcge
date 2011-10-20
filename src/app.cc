@@ -44,7 +44,7 @@ namespace term {
     }
   }
 
-  bool App::subst (Term *&me, Term *term, unsigned int target, bool can_use) {
+  bool App::subst (Term *&/*me*/, Term *term, unsigned int target, bool can_use) {
     bool fun_used = fun_->subst(fun_, term, target, can_use) ;
     can_use = can_use && ! fun_used ;
     bool arg_used = arg_->subst(arg_, term, target, can_use) ;

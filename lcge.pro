@@ -1,9 +1,9 @@
 TEMPLATE = app
 TARGET = 
 DEPENDPATH += .
-INCLUDEPATH += .
+INCLUDEPATH += ./include
 
 # Input
 CONFIG += debug
-HEADERS += abs.hh app.hh term.hh var.hh
-SOURCES += abs.cc app.cc main.cc term.cc var.cc
+HEADERS += include/abs.hh include/app.hh include/term.hh include/var.hh
+SOURCES += src/abs.cc src/app.cc src/main.cc src/term.cc src/var.cc
