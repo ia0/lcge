@@ -1,3 +1,5 @@
 Makefile
 lcge
+Main
 *.o
+*.hi
