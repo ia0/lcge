@@ -1,5 +1,3 @@
-Makefile
-lcge
-Main
+/Makefile
+/lcge
 *.o
-*.hi
