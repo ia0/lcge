@@ -23,6 +23,7 @@ namespace term {
 
   Term *jot2term (const bool jot[], unsigned int pos) ;
   Term *randTerm (unsigned int count) ;
+  Term *fullTerm (unsigned int depth) ;
   Term *parse (const char s[]) ;
   Term *parse (const std::string &s) ;
   Term *parse (std::istream &cin) ;

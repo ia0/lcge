@@ -49,6 +49,15 @@ namespace term {
     return jot2term (jot, count) ;
   }
 
+  Term *fullTerm (unsigned int depth) {
+    if (depth) {
+      --depth ;
+      return new App(fullTerm(depth), fullTerm(depth)) ;
+    } else {
+      return new Var(0) ;
+    }
+  }
+
   Term *parse (const char s[]) {
     using namespace std ;
     string str(s) ;
