@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "app.hh"
+#include "term.hh"
 
 namespace term {
   App::App (Term *fun, Term *arg)

@@ -29,4 +29,8 @@ namespace term {
   bool reduce (Term *&term) ;
 }
 
+#include "var.hh"
+#include "abs.hh"
+#include "app.hh"
+
 #endif  // __TERM_HH__

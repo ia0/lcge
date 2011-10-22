@@ -1,9 +1,6 @@
 #include <iostream>
 
 #include "term.hh"
-#include "var.hh"
-#include "abs.hh"
-#include "app.hh"
 
 int main() {
   using namespace std ;

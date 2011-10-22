@@ -5,9 +5,6 @@
 #include <cassert>
 
 #include "term.hh"
-#include "var.hh"
-#include "abs.hh"
-#include "app.hh"
 
 namespace term {
   Term::Term () {}

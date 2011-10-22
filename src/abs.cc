@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "abs.hh"
+#include "term.hh"
 
 namespace term {
   Abs::Abs (Term *body)

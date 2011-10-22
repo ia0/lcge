@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "var.hh"
+#include "term.hh"
 
 namespace term {
   Var::Var (unsigned int level)
