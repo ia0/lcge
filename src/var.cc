@@ -44,4 +44,8 @@ namespace term {
       level_ += shift ;
     }
   }
+
+  void Var::paint (QPainter &painter) const {
+    painter.drawPoint(QPointF(0, 1)) ;
+  }
 }

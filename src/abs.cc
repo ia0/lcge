@@ -42,4 +42,7 @@ namespace term {
     ++scope ;
     body_->shift(shift, scope) ;
   }
+
+  void Abs::paint (QPainter &/*painter*/) const {
+  }
 }
