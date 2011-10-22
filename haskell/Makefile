@@ -1,6 +1,6 @@
 .PHONY: test
 test: Test ../lcge
-	../lcge | ./Test
+	env TEST_MODE= ../lcge | ./Test
 
 Test: Test.hs
 	ghc --make Test
