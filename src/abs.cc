@@ -26,7 +26,7 @@ namespace term {
     return body_->reduce(body_) ;
   }
 
-  const Term *Abs::get_body () {
+  const Term *Abs::get_body () const {
     return body_ ;
   }
 
@@ -44,8 +44,5 @@ namespace term {
   void Abs::shift (unsigned int shift, unsigned int scope) {
     ++scope ;
     body_->shift(shift, scope) ;
-  }
-
-  void Abs::paint (QPainter &/*painter*/) const {
   }
 }

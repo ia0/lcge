@@ -44,11 +44,11 @@ namespace term {
     }
   }
 
-  const Term *App::get_fun () {
+  const Term *App::get_fun () const {
     return fun_ ;
   }
 
-  const Term *App::get_arg () {
+  const Term *App::get_arg () const {
     return arg_ ;
   }
 
@@ -62,25 +62,5 @@ namespace term {
   void App::shift (unsigned int shift, unsigned int scope) {
     fun_->shift(shift, scope) ;
     arg_->shift(shift, scope) ;
-  }
-
-  void App::paint (QPainter &painter) const {
-    painter.drawPoint(QPointF(0, 1)) ;
-    qreal rotate = 30 ;
-    qreal scale = 0.7 ;
-
-    painter.save() ;
-    painter.translate(0, 2) ;
-    painter.rotate(180) ;
-    painter.rotate(rotate) ;
-    painter.scale(scale, scale) ;
-    fun_->paint (painter) ;
-    painter.restore() ;
-
-    painter.save() ;
-    painter.rotate(rotate) ;
-    painter.scale(scale, scale) ;
-    arg_->paint (painter) ;
-    painter.restore() ;
   }
 }

@@ -17,11 +17,10 @@ namespace term {
     Term *clone () const ;
     void print_ () const ;
     bool reduce (Term *&me) ;
-    const Term *get_fun () ;
-    const Term *get_arg () ;
+    const Term *get_fun () const ;
+    const Term *get_arg () const ;
     bool subst (Term *&me, Term *term, unsigned int target, bool can_use) ;
     void shift (unsigned int shift, unsigned int scope) ;
-    void paint (QPainter &painter) const ;
   } ;
 }
 

@@ -20,7 +20,6 @@ namespace term {
     virtual bool reduce (Term *&me) = 0 ;
     virtual bool subst (Term *&me, Term *term, unsigned int target = 0, bool can_use = true) = 0 ;
     virtual void shift (unsigned int shift, unsigned int scope = 0) = 0 ;
-    virtual void paint (QPainter &painter) const = 0 ;
   } ;
 
   Term *jot2term (const bool jot[], unsigned int pos) ;
