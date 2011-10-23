@@ -47,7 +47,7 @@ void Painter::paintBelow (QPainter &painter, const Term *term) {
 
 void Painter::paintAside (QPainter &painter, const Term *term) {
   painter.save() ;
-  painter.translate(0, 2) ;
+  painter.translate(0, 1 + ratio_) ;
   painter.rotate(180) ;
   painter.scale(ratio_, ratio_) ;
   paintBelow (painter, term) ;
