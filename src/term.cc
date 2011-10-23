@@ -16,10 +16,6 @@ namespace term {
     if (newline) std::cout << std::endl ;
   }
 
-  Term *Term::get_body () {
-    return NULL ;
-  }
-
   Term *jot2term (const bool jot[], unsigned int pos) {
     using namespace std ;
     if (pos == 0) {  // [] = \0

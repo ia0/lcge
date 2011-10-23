@@ -26,11 +26,14 @@ namespace term {
     return body_->reduce(body_) ;
   }
 
-  Term *Abs::get_body () {
-    Term *body = body_ ;
+  const Term *Abs::get_body () {
+    return body_ ;
+  }
+
+  void Abs::extract (Term *&body) {
+    body = body_ ;
     body_ = NULL ;
     delete this ;
-    return body ;
   }
 
   bool Abs::subst (Term *&/*me*/, Term *term, unsigned int target, bool can_use) {

@@ -28,20 +28,28 @@ namespace term {
   }
 
   bool App::reduce (Term *&me) {
-    Term *body = fun_->get_body() ;
-    if (body) {
-      me = body ;
+    Abs *fun_abs = dynamic_cast<Abs*>(fun_) ;
+    if (fun_abs) {
+      fun_abs->extract(me) ;
       Term *arg = arg_ ;
       fun_ = NULL ;
       arg_ = NULL ;
       delete this ;
-      if (! body->subst(me, arg)) {
+      if (! me->subst(me, arg)) {
         delete arg ;
       }
       return true ;
     } else {
       return fun_->reduce(fun_) || arg_->reduce(arg_) ;
     }
+  }
+
+  const Term *App::get_fun () {
+    return fun_ ;
+  }
+
+  const Term *App::get_arg () {
+    return arg_ ;
   }
 
   bool App::subst (Term *&/*me*/, Term *term, unsigned int target, bool can_use) {

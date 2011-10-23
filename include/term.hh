@@ -18,7 +18,6 @@ namespace term {
     virtual void print_ () const = 0 ;
     void print (bool newline = true) const ;
     virtual bool reduce (Term *&me) = 0 ;
-    virtual Term *get_body () ;
     virtual bool subst (Term *&me, Term *term, unsigned int target = 0, bool can_use = true) = 0 ;
     virtual void shift (unsigned int shift, unsigned int scope = 0) = 0 ;
     virtual void paint (QPainter &painter) const = 0 ;

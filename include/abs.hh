@@ -16,7 +16,8 @@ namespace term {
     Term *clone () const ;
     void print_ () const ;
     bool reduce (Term *&me) ;
-    Term *get_body () ;
+    const Term *get_body () ;
+    void extract (Term *&body) ;
     bool subst (Term *&me, Term *term, unsigned int target, bool can_use) ;
     void shift (unsigned int shift, unsigned int scope) ;
     void paint (QPainter &painter) const ;
