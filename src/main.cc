@@ -4,7 +4,7 @@
 #include <QProcessEnvironment>
 
 #include "term.hh"
-#include "painter.hh"
+#include "window.hh"
 
 int main (int argc, char *argv[]) {
   using namespace std ;
@@ -24,7 +24,7 @@ int main (int argc, char *argv[]) {
     return 0 ;
   }
   QApplication app(argc, argv) ;
-  Painter painter(term::fullTerm(10)) ;
-  painter.show() ;
+  Window window ;
+  window.show() ;
   return app.exec() ;
 }

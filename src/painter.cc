@@ -2,7 +2,7 @@
 
 #include "painter.hh"
 
-Painter::Painter (const Term *term, qreal rotate, qreal scale, qreal ratio, QWidget *parent)
+Painter::Painter (Term *term, qreal rotate, qreal scale, qreal ratio, QWidget *parent)
   : QWidget(parent), term_(term),
     rotate_(rotate), scale_(scale), ratio_(ratio) {}
 
@@ -10,20 +10,31 @@ Painter::~Painter () {
   delete term_ ;
 }
 
-void Painter::setTerm (const Term *term) {
+bool Painter::reduce () {
+  bool b = term::reduce(term_) ;
+  update() ;
+  return b ;
+}
+
+void Painter::setTerm (Term *term) {
+  delete term_ ;
   term_ = term ;
+  update() ;
 }
 
 void Painter::setRotate (qreal rotate) {
   rotate_ = rotate ;
+  update() ;
 }
 
 void Painter::setScale (qreal scale) {
   scale_ = scale ;
+  update() ;
 }
 
 void Painter::setRatio (qreal ratio) {
   ratio_ = ratio ;
+  update() ;
 }
 
 void Painter::paintBelow (QPainter &painter, const Term *term) {
